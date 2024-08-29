@@ -25,7 +25,6 @@ public class WarehouseService {
                             DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
                             socket.receive(packet);
                             String received = new String(packet.getData(), 0, packet.getLength());
-                            //System.out.println("Received data is :"+ received);
                             SensorData data = parseSensorData(received);
                             sink.next(data);
                         }
@@ -45,7 +44,6 @@ public class WarehouseService {
     }
 
     private void publishToJms(SensorData data) {
-       // System.out.println("Published to JMS: " + data);
         jmsTemplate.convertAndSend(SENSOR_DATA, data);
     }
 }
