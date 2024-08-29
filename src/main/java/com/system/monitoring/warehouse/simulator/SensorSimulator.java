@@ -39,20 +39,20 @@ public class SensorSimulator {
         public void run() {
             int delay = (5 + random.nextInt(DELAY_BOUND)) * 100;
             TIMER.schedule(new Task(sensorId), delay);
-            sendSensorData();
+            sendSensorData(sensorId);
         }
+    }
 
-        void sendSensorData() {
-            try (DatagramSocket socket = new DatagramSocket()) {
-                int value = random.nextInt(VALUE_BOUND) + 15;
-                String message = String.format("sensor_id=%s;value=%d", sensorId, value);
-                byte[] buffer = message.getBytes();
-                int port = sensorId.startsWith(TEMPERATURE_SYMBOL) ? TEMPERATURE_PORT : HUMIDITY_PORT;
-                DatagramPacket packet = new DatagramPacket(buffer, buffer.length, ADDRESS, port);
-                socket.send(packet);
-            } catch (Exception e) {
-                log.error("Error Generating the sensor results", e);
-            }
+    void sendSensorData(String sensorId) {
+        try (DatagramSocket socket = new DatagramSocket()) {
+            int value = random.nextInt(VALUE_BOUND) + 15;
+            String message = String.format("sensor_id=%s;value=%d", sensorId, value);
+            byte[] buffer = message.getBytes();
+            int port = sensorId.startsWith(TEMPERATURE_SYMBOL) ? TEMPERATURE_PORT : HUMIDITY_PORT;
+            DatagramPacket packet = new DatagramPacket(buffer, buffer.length, ADDRESS, port);
+            socket.send(packet);
+        } catch (Exception e) {
+            log.error("Error Generating the sensor results", e);
         }
     }
 
