@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.InetAddress;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.Timer;
@@ -29,7 +28,7 @@ public class SensorSimulator {
         CompletableFuture.runAsync(() -> Arrays.stream(sensors.split(",")).forEach(sensor -> new Task(sensor).run()));
     }
 
-    private class Task extends TimerTask {
+    class Task extends TimerTask {
         final String sensorId;
 
         public Task(String sensorId) {
@@ -43,7 +42,7 @@ public class SensorSimulator {
             sendSensorData();
         }
 
-        private void sendSensorData() {
+        void sendSensorData() {
             try (DatagramSocket socket = new DatagramSocket()) {
                 int value = random.nextInt(VALUE_BOUND) + 15;
                 String message = String.format("sensor_id=%s;value=%d", sensorId, value);
