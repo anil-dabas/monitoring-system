@@ -9,6 +9,7 @@ import reactor.core.publisher.Flux;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 
+import static com.system.monitoring.domain.SensorData.parseSensorData;
 import static com.system.monitoring.util.Constants.SENSOR_DATA;
 
 @Service
@@ -34,13 +35,6 @@ public class WarehouseService {
                 })
                 .doOnNext(this::publishToJms)
                 .subscribe();
-    }
-
-    private SensorData parseSensorData(String message) {
-        String[] parts = message.split(";");
-        String sensorId = parts[0].split("=")[1];
-        int value = Integer.parseInt(parts[1].split("=")[1]);
-        return new SensorData(sensorId, value);
     }
 
     private void publishToJms(SensorData data) {

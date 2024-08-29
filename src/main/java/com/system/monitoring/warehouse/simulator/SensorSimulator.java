@@ -13,8 +13,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.CompletableFuture;
 
-import static com.system.monitoring.util.Constants.HUMIDITY_PORT;
-import static com.system.monitoring.util.Constants.TEMPERATURE_PORT;
+import static com.system.monitoring.util.Constants.*;
 
 @Slf4j
 @Component
@@ -39,16 +38,18 @@ public class SensorSimulator {
 
         @Override
         public void run() {
-            int delay = (5 + random.nextInt(20)) * 100;
+            int delay = (5 + random.nextInt(DELAY_BOUND)) * 100;
             TIMER.schedule(new Task(sensorId), delay);
+            sendSensorData();
+        }
+
+        private void sendSensorData() {
             try (DatagramSocket socket = new DatagramSocket()) {
-                InetAddress address = InetAddress.getByName("localhost");
-                int value = random.nextInt(60 - 15) + 15;
+                int value = random.nextInt(VALUE_BOUND) + 15;
                 String message = String.format("sensor_id=%s;value=%d", sensorId, value);
                 byte[] buffer = message.getBytes();
-
-                int port = sensorId.startsWith("t") ? TEMPERATURE_PORT : HUMIDITY_PORT;
-                DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, port);
+                int port = sensorId.startsWith(TEMPERATURE_SYMBOL) ? TEMPERATURE_PORT : HUMIDITY_PORT;
+                DatagramPacket packet = new DatagramPacket(buffer, buffer.length, ADDRESS, port);
                 socket.send(packet);
             } catch (Exception e) {
                 log.error("Error Generating the sensor results", e);

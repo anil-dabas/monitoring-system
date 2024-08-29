@@ -12,8 +12,8 @@ import java.util.concurrent.CompletableFuture;
 import static com.system.monitoring.util.Constants.HUMIDITY_PORT;
 import static com.system.monitoring.util.Constants.TEMPERATURE_PORT;
 
-@SpringBootApplication
 @EnableJms
+@SpringBootApplication
 public class MonitoringSystemApplication {
 
 	public static void main(String[] args) {
