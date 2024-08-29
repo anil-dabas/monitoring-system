@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: monitoring-system
+  jms:
+    pub-sub-domain: true
+app:
+  sensor:
+    list: t1,h1,t2,h2,t3,h3,t4,h4,t5,h5,t6,h6,t7,h7,t8,h8,t9,h9
+    threshold:
+      temperature: 35
+      humidity: 50
