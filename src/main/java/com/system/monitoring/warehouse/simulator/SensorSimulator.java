@@ -1,9 +1,6 @@
 package com.system.monitoring.warehouse.simulator;
 
-import com.system.monitoring.domain.SensorData;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -23,19 +20,18 @@ import static com.system.monitoring.util.Constants.TEMPERATURE_PORT;
 @Component
 public class SensorSimulator {
 
-    static Timer timer = new Timer();
+    private static final Timer TIMER = new Timer();
     private final Random random = new Random();
 
     @Value("${app.sensor.list:t1,h1,t2,h2,t3,h3}")
     private String sensors;
 
-
     public void initSimulators(){
         CompletableFuture.runAsync(() -> Arrays.stream(sensors.split(",")).forEach(sensor -> new Task(sensor).run()));
     }
 
-    class Task extends TimerTask {
-        String sensorId;
+    private class Task extends TimerTask {
+        final String sensorId;
 
         public Task(String sensorId) {
             this.sensorId = sensorId;
@@ -43,8 +39,8 @@ public class SensorSimulator {
 
         @Override
         public void run() {
-            int delay = (5 + new Random().nextInt(20)) * 100;
-            timer.schedule(new Task(sensorId), delay);
+            int delay = (5 + random.nextInt(20)) * 100;
+            TIMER.schedule(new Task(sensorId), delay);
             try (DatagramSocket socket = new DatagramSocket()) {
                 InetAddress address = InetAddress.getByName("localhost");
                 int value = random.nextInt(60 - 15) + 15;

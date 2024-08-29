@@ -25,9 +25,6 @@ public class MonitoringSystemApplication {
 		// Run the listeners asynchronously
 		CompletableFuture.runAsync(() -> warehouseService.startListeningAndPublishing(HUMIDITY_PORT));
 		CompletableFuture.runAsync(() -> warehouseService.startListeningAndPublishing(TEMPERATURE_PORT));
-
-		// Wait for both listeners to complete
-		//CompletableFuture.allOf(humidityFuture, temperatureFuture).join();
 	}
 
 }
