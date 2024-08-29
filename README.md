@@ -32,3 +32,18 @@
 
 ## How to Run the application 
 
+1. Download the application from Git in a directory
+
+2. Please keep the port 8080 free as the application will run on port 8080
+
+3. Run below command from project root directory (use terminal or cmd)
+   1. For Mac / Linux ```./gradlew bootRun```
+4. Now the application will start and you will see the SpringBoot banner
+
+## Details 
+
+- I have created a ```SensorSimulator.java``` that generates the messages on UDP ports as per the requirements 
+- In the ```WarehouseService.java``` I am listening to the messages on the ports and then publishing to JMS broker (SpringBoot Embedded broker) 
+- In ```CentralMonitoringService``` I am consuming the messages and checking for the configured threshold of the temperature and humidity 
+- If the threshold is breached I generate an alert (In this case I am printing on console) 
+- 
