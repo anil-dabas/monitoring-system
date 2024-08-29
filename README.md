@@ -46,4 +46,4 @@
 - In the ```WarehouseService.java``` I am listening to the messages on the ports and then publishing to JMS broker (SpringBoot Embedded broker) 
 - In ```CentralMonitoringService``` I am consuming the messages and checking for the configured threshold of the temperature and humidity 
 - If the threshold is breached I generate an alert (In this case I am printing on console) 
-- 
+- ![img.png](img.png)
